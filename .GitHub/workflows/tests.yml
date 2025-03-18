@@ -1,1 +1,33 @@
-# github actions 
+
+#### **A. GitHub Actions CI (.github/workflows/tests.yml)**
+```yaml
+name: MemChain CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - run: npm install
+      - run: pip install -r requirements.txt
+      
+      - name: Run Tests
+        run: |
+          npm test
+          pytest tests/
+```
