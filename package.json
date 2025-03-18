@@ -1,0 +1,15 @@
+{
+  "name": "memchain-pou",
+  "version": "0.1.0",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha tests/unit/*.js",
+    "stress": "node tests/stress-test.js"
+  },
+  "dependencies": {
+    "hyperswarm": "^3.0.0-rc.12",  # By @mafintosh
+    "blake3": "^2.1.7",            # Original: @connor4312
+    "zstd-codec": "^0.3.6",        # By @yoshikiohshima
+    "transformers-js": "^2.4.1"    # Hugging Face team
+  }
+}
