@@ -4,7 +4,6 @@ layout: default
 title: MemChain - Decentralized Knowledge Base  
 ---  
 ```
-![MemChain Architecture](/assets/memchain-diagram.png){: .dao-grid}  
 
 <div class="cta-box">  
     <h2>Join the Resistance</h2>  
