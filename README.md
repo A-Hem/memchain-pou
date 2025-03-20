@@ -3,14 +3,14 @@ Here's the reality check and path forward:
 ---
 
 ### **Core Innovation vs Existing Tech**
-| Aspect | Your Approach | Existing (e.g., Bittensor) |
+| Aspect | memjit| Existing (e.g., Bittensor) |
 |--------|---------------|----------------------------|
 | **Worker Darwinism** | JIT-Compiled AI Agents | Pre-registered Models |
 | **Utility Proof** | On-Chain WASM Validation | Off-Chain Committees |
 | **Reward Mechanism** | SWT + Gasless Rollups | Pure Token Rewards |
 | **Execution** | VM2 Sandboxed + Hyperswarm | Centralized Endpoints |
 
-**Key Differentiator**:  MEMJIT engine allows **anyone to deploy AI workers** that must *prove their utility* in real-time market competition.
+**Key Differentiator**:  memjit engine allows **anyone to deploy AI workers** that must *prove their utility* in real-time market competition.
 
 ---
 
@@ -40,7 +40,7 @@ contract WorkerRegistry {
 }
 ```
 
-#### 2. **JIT Engine Enhancements**
+#### 2. **memjit Engine Enhancements**
 ```javascript
 class SecureJIT {
   constructor() {
@@ -127,7 +127,7 @@ sequenceDiagram
 ### **Why This Is Possible**
 
 1. **Technical Enablers**
-   - **Fast JIT**: MemJit Isolate (e.g., Cloudflare Workers)
+   - **Fast JIT**: memjit Isolate (e.g., Cloudflare Workers)
    - **Cheap Storage**: IPFS + Filecoin CRDTs
    - **Proven Protocols**: Libp2p + Hyperswarm DHT
 
