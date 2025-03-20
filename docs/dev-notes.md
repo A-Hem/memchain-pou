@@ -49,7 +49,7 @@ class ZstdWorker {
 import { PoUEngine } from '../src/pou-engine.js';
 
 test('Valid technical submission', async () => {
-  const techPaper = fs.readFileSync('quantum-computing.pdf');
+  const techPaper = fs.readFileSync('quantum-catdog.pdf');
   const engine = new PoUEngine();
   
   const { cid, proof } = await engine.submit(techPaper, {
@@ -92,7 +92,7 @@ test('Valid technical submission', async () => {
 
 1. **Core Dependencies**
    ```bash
-   npm install @noble/hashes @hyperswarm/zstd \
+   npm install @noble/hashes @hyperswarmzstd \
      @xenova/transformers
    ```
 
