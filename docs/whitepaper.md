@@ -148,15 +148,15 @@ Where:
 
 ### Roadmap
 
-1. **Phase 1** (Q4 2024)  
+1. **Phase 1** 
    - Testnet launch with basic JIT execution
    - SWT token deployment on Ethereum L2
 
-2. **Phase 2** (Q2 2025)  
+2. **Phase 2** 
    - ZK-proof integration
    - Hyperswarm network incentives
 
-3. **Phase 3** (Q4 2025)  
+3. **Phase 3** 
    - On-chain model evolution engine
    - Decentralized governance DAO
 
