@@ -15,7 +15,10 @@
 openssl genpkey -algorithm ED25519 -out .swarmkey
 ```
 
-
+### Then set in `.env`:
+```bash
+SWARM_KEY="$(cat .swarmkey)"
+```
 
 
 This setup was meant to 
