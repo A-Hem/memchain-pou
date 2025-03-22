@@ -1,9 +1,11 @@
-import { generateWASM } from '@webassemblyjs/wasm-gen';
-import { applyOptimizations } from './optimizers.js';
+import { optimize, darwinOptimize } from './optimizers.js';
+import { generate } from '@webassemblyjs/wasm-gen';
 
 export class Compiler {
-  compile(code) {
-    const rawWASM = generateWASM(code);
-    return applyOptimizations(rawWASM);
+  compile(source, { aggressive=false }={}) {
+    const rawWASM = generate(source);
+    return aggressive ? 
+      darwinOptimize(rawWASM) :
+      optimize(rawWASM);
   }
 }
