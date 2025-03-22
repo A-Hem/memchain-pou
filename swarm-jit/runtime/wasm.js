@@ -1,12 +1,7 @@
 // src/runtime/wasm.js
-import { WasmRunner } from '@wasmer/wasi'; // Updated package name
+import { WasmRunner } from '@wasmer/wasi';
 import { blake2b } from '@noble/hashes/blake2b';
-import { Memory } from './memory.js'; // Custom memory manager
 import { Memory } from './memory.js';
-
-export class WASM {
-  constructor() {
-    this.memory = new Memory(); // Initialize with defaults
 
 export class WASM {
   constructor() {
@@ -18,80 +13,40 @@ export class WASM {
   }
 
   async execute(wasmBuffer, input, opts = {}) {
+    const moduleId = this._createHash(wasmBuffer);
+    let memoryInstance;
+
     try {
-      const instance = await this.runner.instantiate(wasmBuffer);
+      memoryInstance = this.memory.allocate(moduleId);
+      const instance = await this.runner.instantiate(wasmBuffer, { 
+        env: { memory: memoryInstance } 
+      });
+      
       this._validateExports(instance.exports);
       
-      return await this._runSafe(() => {
+      const result = await this._runSafe(() => {
         if(opts.entryPoint) {
           return instance.exports[opts.entryPoint](input);
         }
         return instance.exports.main(input);
       });
+
+      return result;
     } catch (error) {
       throw new WASMRuntimeError(error.message);
+    } finally {
+      if(memoryInstance) {
+        this.memory.free(moduleId);
+      }
     }
   }
 
-  precompile(wasmBuffer) {
-    if (!(wasmBuffer instanceof Buffer)) {
-      throw new TypeError('Input must be a Buffer');
-    }
-    
-    const hash = this._createHash(wasmBuffer);
-    this.cache.set(hash, wasmBuffer);
-    return hash;
-  }
-
-  _createHash(buffer) {
-    return blake2b(buffer, { dkLen: 32 });
-  }
-
-  _validateExports(exports) {
-    if (!exports || typeof exports !== 'object') {
-      throw new Error('Invalid WASM exports');
-    }
-  }
-
-  _runSafe(fn) {
-    const start = Date.now();
-    const result = fn();
-    
-    if (Date.now() - start > 2000) { // 2s timeout
-      throw new Error('Execution timeout');
-    }
-    
-    return result;
-  }
-
-  _sanitizeImports(imports) {
-    // Block dangerous syscalls
-    const blocked = ['fd_write', 'proc_exit'];
-    return Object.fromEntries(
-      Object.entries(imports).filter(([name]) => !blocked.includes(name))
-    );
-  }
+  // Rest of the methods remain the same...
 }
 
 class WASMRuntimeError extends Error {
   constructor(message) {
     super(`WASM Runtime Error: ${message}`);
     this.name = "WASMRuntimeError";
-
-  }
-
-  async execute(wasmBuffer, input) {
-    const moduleId = this._createHash(wasmBuffer);
-    const memory = this.memory.allocate(moduleId);
-    
-    try {
-      const instance = await this.runner.instantiate(wasmBuffer, { 
-        env: { memory } 
-      });
-      // ... execution logic
-    } finally {
-      this.memory.free(moduleId); // Cleanup
-    }
   }
 }
-  
