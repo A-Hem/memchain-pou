@@ -2,6 +2,11 @@
 import { WasmRunner } from '@wasmer/wasi'; // Updated package name
 import { blake2b } from '@noble/hashes/blake2b';
 import { Memory } from './memory.js'; // Custom memory manager
+import { Memory } from './memory.js';
+
+export class WASM {
+  constructor() {
+    this.memory = new Memory(); // Initialize with defaults
 
 export class WASM {
   constructor() {
@@ -72,5 +77,21 @@ class WASMRuntimeError extends Error {
   constructor(message) {
     super(`WASM Runtime Error: ${message}`);
     this.name = "WASMRuntimeError";
+
+  }
+
+  async execute(wasmBuffer, input) {
+    const moduleId = this._createHash(wasmBuffer);
+    const memory = this.memory.allocate(moduleId);
+    
+    try {
+      const instance = await this.runner.instantiate(wasmBuffer, { 
+        env: { memory } 
+      });
+      // ... execution logic
+    } finally {
+      this.memory.free(moduleId); // Cleanup
+    }
   }
 }
+  
