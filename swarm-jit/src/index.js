@@ -11,7 +11,7 @@ export { Memory } from './runtime/memory.js';
 // Swarm Network
 export { SwarmNetwork } from './swarm/DHT.js';
 export { KeyManager } from './swarm/keygen.js';
-export { default as startNode } from './swarm/node.js';
+export { startNode } from './swarm/node.js';
 
 // Utilities
-export { createHash } from './utils/hashing.js';
+export { createHash, quickHash } from './utils/hashing.js';
