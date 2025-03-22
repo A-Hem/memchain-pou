@@ -1,4 +1,4 @@
-# 1. WASM Compiler (lib/compiler.js)
+# WASM Compiler (lib/compiler.js)
 ```javascript
 const { compile } = require('@webassemblyjs/wasm-gen');
 const { optimize } = require('@webassemblyjs/wasm-opt');
