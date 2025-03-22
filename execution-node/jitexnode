@@ -1,0 +1,46 @@
+const { NodeVM } = require('vm2');
+const Web3 = require('web3');
+const compileJS = require('./compileJS');
+const { WorkerRegistry } = require('./WorkerRegistry');
+const { WorkerExecutionVerifier } = require('./WorkerExecutionVerifier');
+
+class JITExecutionNode {
+  constructor(workerRegistryAddress, verifierAddress, web3Provider) {
+    this.web3 = new Web3(web3Provider);
+    this.workerRegistry = new this.web3.eth.Contract(WorkerRegistry.abi, workerRegistryAddress);
+    this.verifier = new this.web3.eth.Contract(WorkerExecutionVerifier.abi, verifierAddress);
+    this.executionQueue = [];
+  }
+
+  async fetchWorkerCode(workerId) {
+    const worker = await this.workerRegistry.methods.workers(workerId).call();
+    return worker.code;
+  }
+
+  async executeWorker(workerId, input) {
+    const code = await this.fetchWorkerCode(workerId);
+    const wasmBuffer = compileJS(code); // Compile JS to WASM
+
+    const vm = new NodeVM({ sandbox: { input, console }, require: { external: true } });
+
+    try {
+      const script = new vm.Script(wasmBuffer);
+      const result = script.run();
+      const executionId = this.web3.utils.keccak256(this.web3.eth.abi.encodeParameters(['bytes32', 'bytes', 'uint256'], [workerId, input, Date.now()]));
+      await this.submitResult(executionId, workerId, input, result, true);
+      return result;
+    } catch (error) {
+      console.error('Execution failed:', error);
+      await this.submitResult(executionId, workerId, input, null, false);
+      throw error;
+    }
+  }
+
+  async submitResult(executionId, workerId, input, output, successful) {
+    const accounts = await this.web3.eth.getAccounts();
+    const account = accounts[0];
+    await this.verifier.methods.submitExecutionResult(executionId, workerId, this.web3.utils.asciiToHex(JSON.stringify(input)), this.web3.utils.asciiToHex(JSON.stringify(output)), successful).send({ from: account });
+  }
+}
+
+module.exports = JITExecutionNode;
