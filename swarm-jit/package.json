@@ -1,0 +1,14 @@
+{
+  "name": "swarm-jit",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "swarm-jit": "./bin/cli.js"
+  },
+  "dependencies": {
+    "@webassemblyjs/wasm-gen": "^1.11.6",
+    "hyperdht": "^6.2.0",
+    "commander": "^13.1.0",
+    "dotenv": "^16.3.1"
+  }
+}
