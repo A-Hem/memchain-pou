@@ -1,1 +1,17 @@
-// main executable 
+#!/usr/bin/env node
+import { Compiler } from '../src/compiler/Compiler.js';
+import { Swarm } from '../src/swarm/DHT.js';
+import { program } from 'commander';
+
+// Handles:
+// - Argument parsing
+// - Command routing
+// - User output
+
+program
+  .command('compile <file>')
+  .action(async (file) => {
+    const compiler = new Compiler();
+    const swarm = new Swarm();
+    // ...
+  });
