@@ -1,0 +1,5 @@
+# Installation
+```bash
+npm init -y
+npm install blakejs # Required for hashing utils
+```
