@@ -13,8 +13,16 @@ export class SurvivalGC {
     }
   }
 
-  _calculateFitness({ size, lastUsed }) {
-    const age = Date.now() - lastUsed;
-    return (1 / (size * age)) * 1e6; // Larger/newer → higher fitness
-  }
+_calculateFitness(stats) {
+  const baseScore = super._calculateFitness(stats);
+  
+  // Penalize error-prone code
+  const errorPenalty = stats.errorCount * 0.2;
+  
+  // Reward consistent performers
+  const stabilityBonus = stats.successStreak * 0.1;
+  
+  return Math.max(0, 
+    baseScore - errorPenalty + stabilityBonus
+  );
 }
