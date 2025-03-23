@@ -1,9 +1,9 @@
-v2 -simplified reality check 
+v2 -simplified reality check (do not use this at all until it's safe, and if you use any of the code here must use Safe mode in a VM or something) 
 
-- just a raw decentralized lejit compiler is much better 
+- just a raw decentralized lejit compiler is much better, the sub directory /memjit/swarm-jit is the v1 MVP but it's no where near ready to use, lots of things to work out... it will work tho, potentially, this could be really major stitching together existing packages and experimenting.. the Sybil, and staking use in crypto as a hybrid ("user decides to go purist or crypto") is being patched together in MemJit/memejit and another repo -Trap/Jeet will have some similar and some unique design with the  distributed, decentralized, JIT compiler.
 
 
- let's cut through the nonsense and explain how this *actually* works without mystical component libraries and buzzwords:
+ As the JIT or Jeet is being worked out I had Deepseek explain how this *actually* works without mystical component libraries and buzzwords:
 
 
 ### **Raw Mechanics of a Decentralized jit**
